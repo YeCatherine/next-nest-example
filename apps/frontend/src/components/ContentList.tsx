@@ -60,15 +60,9 @@ const ContentItemPage: FC<ContentItemPageProps> = ({ entity = 'author', titleFie
       setCurrentPage(newPage);
     }
   };
-
-  const contentItemTitle = useMemo(() => contentItems?.map((item) =>
-    titleFields.map((field, index) => (
-      <React.Fragment key={index}>
-        {index > 0 ? ' ' : ''}
-        {item[field]}
-      </React.Fragment>
-    )),
-  ), [contentItems, titleFields]);
+  const contentItemTitle = (item: ContentItem): string => {
+    return titleFields.map(field => item[field]).join(' ');
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -119,7 +113,6 @@ interface ContentListItemsProps {
  * @returns {React.ReactElement} The React component.
  */
 const ContentListItems: FC<ContentListItemsProps> = ({ entity, contentItems=[], contentItemTitle }) => {
-  console.log('test:',{contentItems})
 
   if (contentItems.length === 0) {
     return <p>No content items available.</p>;
@@ -136,7 +129,7 @@ const ContentListItems: FC<ContentListItemsProps> = ({ entity, contentItems=[], 
             href={`/${entity}/${contentItem.id}`}
             className="text-blue-600 hover:text-blue-800 transition duration-300"
           >
-            {contentItemTitle}
+            {contentItemTitle(contentItem)}
           </Link>
           <div className="flex flex-row">
             <Link href={`/${entity}/${contentItem.id}/edit`} className="p-2">
