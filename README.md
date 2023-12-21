@@ -35,6 +35,9 @@ Follow these steps to prepare your environment:
   - Nest.js backend: `http://localhost:3000`
   - Nest.js Swagger documentation: `http://localhost:3000/api`
   - Next.js frontend: `http://localhost:3030`
+  - copy .env.example to .env and add your own credentials for root and for backend. 
+  - `echo 'NEXT_PUBLIC_API_BASE_URL="http://localhost:3000"' > ./apps/frontend/.env.local`
+
 
 ## Quick Start
 For a quick setup, run the following commands in your terminal:
@@ -44,6 +47,9 @@ docker-compose up -d
 nvm install
 nvm use
 npm install
+cp .env.example .env
+cp ./apps/backend/.env.example ./apps/backend/.env
+echo 'NEXT_PUBLIC_API_BASE_URL="http://localhost:3000"' > ./apps/frontend/.env.local
 npm run dev
 open http://localhost:3030
 npm run test
