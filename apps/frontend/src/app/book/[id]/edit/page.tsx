@@ -1,57 +1,71 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const EditAuthor = ({
-  entity = 'book',
-  params,
-}: {
+const BookEditForm = ({
+                      entity = "book",
+                      params
+                    }: {
   entity: string;
   params: { id?: string };
 }) => {
-  const [author, setAuthor] = useState({ firstName: '', lastName: '' });
+  const [contentItem, setContentItem] = useState({ firstName: "", lastName: "" });
+  const [optionsList, setOptionsList] = useState<Any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     const fetchAuthor = async () => {
       const result = await axios(
-        `http://localhost:3000/${entity}/${params.id}`,
+        `http://localhost:3000/author?page=1&limit=0`
       );
-      setAuthor(result.data);
+
+      setOptionsList(result.data.data);
+    };
+
+    const fetchBook = async () => {
+      const result = await axios(
+        `http://localhost:3000/${entity}/${params.id}`
+      );
+      console.log('book:', result.data);
+      setContentItem(result.data);
     };
 
     if (params.id) {
+      fetchBook();
       fetchAuthor();
     }
   }, []);
 
   const handleChange = (e) => {
-    setAuthor({ ...author, [e.target.name]: e.target.value });
+    setContentItem({ ...contentItem, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('contentItem', {contentItem});
     if (params.id) {
-      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, author);
+      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, contentItem);
     } else {
-      await axios.post(`http://localhost:3000/${entity}`, author);
+      await axios.post(`http://localhost:3000/${entity}`, contentItem);
     }
     router.push(`/${entity}`);
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h3 className="text-lg font-semibold mb-4">Edit Author</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {params?.id ? 'Update' : 'Create'} "{entity}" content item
+      </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            First Name:
+            Title:
             <input
-              type="text"
-              name="firstName"
-              value={author.firstName ? author.firstName : ''}
+              type="title"
+              name="title"
+              value={contentItem.title ? contentItem.title : ""}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -59,11 +73,40 @@ const EditAuthor = ({
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Last Name:
+            Author:
+            <select
+              name="author"
+              value={contentItem.author ? contentItem.author : ""}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
+            >
+              {optionsList.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.firstName} {option.lastName}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Page Count:
             <input
               type="text"
-              name="lastName"
-              value={author.lastName ? author.lastName : ''}
+              name="pageCount"
+              value={contentItem.pageCount ? contentItem.pageCount : ""}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Release Date:
+            <input
+              type="date"
+              name="releaseDate"
+              value={contentItem.releaseDate ? contentItem.releaseDate : ""}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -80,4 +123,4 @@ const EditAuthor = ({
   );
 };
 
-export default EditAuthor;
+export default BookEditForm;

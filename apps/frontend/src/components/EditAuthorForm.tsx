@@ -38,7 +38,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
       <h3 className="text-lg font-semibold mb-4">
-        {params?.id ? 'Update' : 'Create'}&n"{entity}" content item
+        {params?.id ? 'Update' : 'Create'} "{entity}" content item
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

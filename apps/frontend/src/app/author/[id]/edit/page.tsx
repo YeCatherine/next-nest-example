@@ -11,7 +11,7 @@ const EditAuthor = ({
   entity: string;
   params: { id?: string };
 }) => {
-  const [author, setAuthor] = useState({ firstName: '', lastName: '' });
+  const [contentItem, setContentItem] = useState({ firstName: '', lastName: '' });
   const router = useRouter();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const EditAuthor = ({
       const result = await axios(
         `http://localhost:3000/${entity}/${params.id}`,
       );
-      setAuthor(result.data);
+      setContentItem(result.data);
     };
 
     if (params.id) {
@@ -28,15 +28,15 @@ const EditAuthor = ({
   }, []);
 
   const handleChange = (e) => {
-    setAuthor({ ...author, [e.target.name]: e.target.value });
+    setContentItem({ ...contentItem, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (params.id) {
-      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, author);
+      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, contentItem);
     } else {
-      await axios.post(`http://localhost:3000/${entity}`, author);
+      await axios.post(`http://localhost:3000/${entity}`, contentItem);
     }
     router.push(`/${entity}`);
   };
@@ -54,7 +54,7 @@ const EditAuthor = ({
             <input
               type="text"
               name="firstName"
-              value={author.firstName ? author.firstName : ''}
+              value={contentItem.firstName ? contentItem.firstName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -66,7 +66,7 @@ const EditAuthor = ({
             <input
               type="text"
               name="lastName"
-              value={author.lastName ? author.lastName : ''}
+              value={contentItem.lastName ? contentItem.lastName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
