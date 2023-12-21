@@ -1,10 +1,8 @@
 'use client';
 import React from 'react';
 
-import EditAuthorForm from '@/components/EditAuthorForm';
+import EditAuthorForm from '@/components/forms/EditAuthorForm';
 
-const EditAuthorPage = () => {
-  return <EditAuthorForm />;
-};
-
-export default EditAuthorPage;
+export default function EditAuthorPage() {
+  return <EditAuthorForm entity={'author'} />;
+}

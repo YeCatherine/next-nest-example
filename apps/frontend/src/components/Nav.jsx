@@ -1,9 +1,9 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 const links = [
-  { href: '/', text: 'Home' },
-  { href: '/book', text: 'Books' },
-  { href: '/author', text: 'Author' },
+  { href: "/", text: "Home" },
+  { href: "/book", text: "Books" },
+  { href: "/author", text: "Author" }
 ];
 
 const Nav = () => (

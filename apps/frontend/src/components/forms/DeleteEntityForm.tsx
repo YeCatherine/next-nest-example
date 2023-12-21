@@ -1,6 +1,7 @@
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import React from "react";
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import React from 'react';
+import { DeleteFormEntityHeader } from '@/components/ui/DeleteFormEntityHeader';
 
 /**
  * Component for deleting a specified entity.
@@ -13,9 +14,9 @@ import React from "react";
  * @returns {JSX.Element} A component for deleting an entity.
  */
 const DeleteEntityForm = ({
-                            entity = "author",
-                            params
-                          }: {
+  entity = 'author',
+  params,
+}: {
   entity: string;
   params: { id: string };
 }) => {
@@ -25,12 +26,10 @@ const DeleteEntityForm = ({
     await axios.delete(`http://localhost:3000/${entity}/${params.id}`);
     router.push(`/${entity}`);
   };
-
   return (
     <div className="flex flex-col items-center justify-center p-6">
-      <h1 className="text-xl font-bold mb-4">
-        Are you sure you want to delete this "{entity}" content item??
-      </h1>
+      <DeleteFormEntityHeader entity={entity} />
+
       <div className="flex space-x-4">
         <button
           onClick={handleDelete}

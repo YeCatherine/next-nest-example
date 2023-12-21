@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useMemo, FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -18,6 +18,7 @@ function capitalizeFirstLetter(string: string): string {
 
 interface ContentItem {
   id: string;
+
   [key: string]: any;
 }
 

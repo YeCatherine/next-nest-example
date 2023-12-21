@@ -1,12 +1,22 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-const EditAuthor = ({ params }: { params: { id?: string } }) => {
-  const entity = 'author';
-  const [author, setAuthor] = useState({ firstName: '', lastName: '' });
+const EditAuthorForm = ({
+  entity = 'author',
+  params,
+}: {
+  entity: string;
+  params: { id?: string };
+}) => {
+  //const entity = 'author';
+  const [contentItem, setContentItem] = useState({
+    firstName: '',
+    lastName: '',
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -14,7 +24,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
       const result = await axios(
         `http://localhost:3000/${entity}/${params.id}`,
       );
-      setAuthor(result.data);
+      setContentItem(result.data);
     };
     if (params?.id) {
       fetchAuthor();
@@ -22,15 +32,18 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
   }, []);
 
   const handleChange = (e) => {
-    setAuthor({ ...author, [e.target.name]: e.target.value });
+    setContentItem({ ...contentItem, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (params?.id) {
-      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, author);
+      await axios.patch(
+        `http://localhost:3000/${entity}/${params.id}`,
+        contentItem,
+      );
     } else {
-      await axios.post(`http://localhost:3000/${entity}`, author);
+      await axios.post(`http://localhost:3000/${entity}`, contentItem);
     }
     router.push(`/${entity}`);
   };
@@ -38,7 +51,8 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
       <h3 className="text-lg font-semibold mb-4">
-        {params?.id ? 'Update' : 'Create'} "{entity}" content item
+        {params?.id ? 'Update' : 'Create'} "{entity}" content item |{' '}
+        <Link href={`/${entity}`}>Back to {entity} list</Link>
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -47,7 +61,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
             <input
               type="text"
               name="firstName"
-              value={author.firstName}
+              value={contentItem.firstName ? contentItem.firstName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -59,7 +73,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
             <input
               type="text"
               name="lastName"
-              value={author.lastName}
+              value={contentItem.lastName ? contentItem.lastName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -76,4 +90,4 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
   );
 };
 
-export default EditAuthor;
+export default EditAuthorForm;
