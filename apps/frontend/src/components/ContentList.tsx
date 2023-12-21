@@ -36,19 +36,30 @@ interface ContentItemPageProps {
 const ContentItemPage: FC<ContentItemPageProps> = ({ entity = 'author', titleFields = ['title'] }) => {
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10;
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios(`${API_BASE_URL}/${entity}`);
+        const result = await axios(`${API_BASE_URL}/${entity}?page=${currentPage}&limit=${itemsPerPage}`);
         setContentItems(result.data.data);
-      } catch (err: any) { // Use AxiosError for more specific error handling
+        setTotalPages(result.data.totalPages);
+      } catch (err: any) {
         setError(err.message);
       }
     };
 
     fetchData();
-  }, [entity]);
+  }, [entity, currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   const contentItemTitle = useMemo(() => contentItems?.map((item) =>
     titleFields.map((field, index) => (
@@ -64,6 +75,7 @@ const ContentItemPage: FC<ContentItemPageProps> = ({ entity = 'author', titleFie
       <ContentListTopBar entity={entity} />
       {error && <p className="text-red-500">Error loading content items: {error}</p>}
       <ContentListItems entity={entity} contentItems={contentItems} contentItemTitle={contentItemTitle} />
+      <Paginator currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   );
 };
@@ -141,3 +153,29 @@ const ContentListItems: FC<ContentListItemsProps> = ({ entity, contentItems=[], 
 };
 
 export default ContentItemPage;
+
+const Paginator: FC<{ currentPage: number; totalPages: number; onPageChange: (page: number) => void }> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => (
+  <div className="flex justify-between items-center my-4">
+    <button
+      onClick={() => onPageChange(currentPage - 1)}
+      disabled={currentPage <= 1}
+      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+    >
+      Previous
+    </button>
+    <span>
+      Page {currentPage} of {totalPages}
+    </span>
+    <button
+      onClick={() => onPageChange(currentPage + 1)}
+      disabled={currentPage >= totalPages}
+      className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+);
