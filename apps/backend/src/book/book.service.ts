@@ -20,7 +20,12 @@ export class BookService {
   async findAll(
     page = 1,
     limit = 10,
-  ): Promise<{ data: Book[]; count: number; currentPage: number; totalPages: number }> {
+  ): Promise<{
+    data: Book[];
+    count: number;
+    currentPage: number;
+    totalPages: number;
+  }> {
     // Validate page and limit
     page = page > 0 ? page : 1;
     limit = limit > 0 ? limit : 10;
