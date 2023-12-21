@@ -1,2 +1,13 @@
-node_modules
+# env variables
 .env
+# data foders
+data/*
+
+# Dependency directories
+node_modules/
+
+# Build output
+**/.next/
+**/out/
+**/build/
+**/dist/
