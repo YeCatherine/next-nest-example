@@ -1,0 +1,6 @@
+# Ignore all files in specific directories
+build/
+dist/
+.next
+logs/
+data/
