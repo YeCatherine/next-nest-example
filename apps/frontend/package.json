@@ -1,14 +1,16 @@
 {
-  "name": "frontend",
+  "name": "book-author-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3030",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "dependencies": {
+    "axios": "^1.6.2",
     "react": "^18",
     "react-dom": "^18",
     "next": "14.0.4"
