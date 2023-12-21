@@ -15,7 +15,7 @@ const BookContentItemPage = ({ params }: { params: { id: string } }) => {
     };
 
     fetchBook();
-  }, []);
+  }, [params.id]);
 
   return (
     <div>

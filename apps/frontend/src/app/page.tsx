@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -12,13 +12,11 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-
             <h2 className={'mb-3 text-2xl font-semibold'}>
               Authors{' '}
-              <span
-                className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                -&gt;
+              </span>
             </h2>
             <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
               Authors list.
@@ -30,22 +28,16 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-
             <h2 className={'mb-3 text-2xl font-semibold'}>
               Books{' '}
-              <span
-                className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                -&gt;
+              </span>
             </h2>
-            <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>
-              Books list.
-            </p>
+            <p className={'m-0 max-w-[30ch] text-sm opacity-50'}>Books list.</p>
           </Link>
-
         </div>
       </div>
-
     </main>
   );
 }

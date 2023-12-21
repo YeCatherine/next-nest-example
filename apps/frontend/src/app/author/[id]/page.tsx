@@ -14,7 +14,7 @@ const Author = ({ params }: { params: { id: string } }) => {
     };
 
     fetchAuthor();
-  }, []);
+  }, [params.id]);
 
   return (
     <div>

@@ -12,7 +12,6 @@ const EditAuthorForm = ({
   entity: string;
   params: { id?: string };
 }) => {
-  //const entity = 'author';
   const [contentItem, setContentItem] = useState({
     firstName: '',
     lastName: '',
@@ -29,7 +28,7 @@ const EditAuthorForm = ({
     if (params?.id) {
       fetchAuthor();
     }
-  }, []);
+  }, [entity, params]);
 
   const handleChange = (e) => {
     setContentItem({ ...contentItem, [e.target.name]: e.target.value });
@@ -51,7 +50,7 @@ const EditAuthorForm = ({
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
       <h3 className="text-lg font-semibold mb-4">
-        {params?.id ? 'Update' : 'Create'} "{entity}" content item |{' '}
+        {params?.id ? 'Update' : 'Create'} &quot;{entity}&quot; content item |{' '}
         <Link href={`/${entity}`}>Back to {entity} list</Link>
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">

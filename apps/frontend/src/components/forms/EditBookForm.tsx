@@ -19,7 +19,7 @@ const EditBookForm = ({
 
   useEffect(() => {
     const fetchAuthor = async () => {
-      const result = await axios(`http://localhost:3000/author?page=1&limit=0`);
+      const result = await axios('http://localhost:3000/author?page=1&limit=0');
 
       setOptionsList(result.data.data);
     };
@@ -28,7 +28,7 @@ const EditBookForm = ({
       const result = await axios(
         `http://localhost:3000/${entity}/${params.id}`,
       );
-      console.log('book:', result.data);
+
       setContentItem(result.data);
     };
 
@@ -36,7 +36,7 @@ const EditBookForm = ({
       fetchBook();
       fetchAuthor();
     }
-  }, []);
+  }, [entity, params]);
 
   const handleChange = (e) => {
     setContentItem({ ...contentItem, [e.target.name]: e.target.value });
@@ -44,7 +44,6 @@ const EditBookForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('contentItem', { contentItem });
     if (params.id) {
       await axios.patch(
         `http://localhost:3000/${entity}/${params.id}`,
