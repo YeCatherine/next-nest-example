@@ -20,13 +20,21 @@ export class BookService {
   async findAll(
     page = 1,
     limit = 10,
-  ): Promise<{ data: Book[]; count: number }> {
+  ): Promise<{ data: Book[]; count: number; currentPage: number; totalPages: number }> {
+    // Validate page and limit
+    page = page > 0 ? page : 1;
+    limit = limit > 0 ? limit : 10;
+
     const [data, count] = await this.bookRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
 
-    return { data, count };
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(count / limit);
+
+    // Return the data along with pagination details
+    return { data, count, currentPage: page, totalPages };
   }
 
   async findOne(id: number): Promise<Book | undefined> {

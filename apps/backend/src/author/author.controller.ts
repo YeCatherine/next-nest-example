@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
@@ -13,30 +14,33 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Controller('author')
 export class AuthorController {
-  constructor(private readonly authorService: AuthorService) {}
+  constructor(private readonly AuthorService: AuthorService) {}
 
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorService.create(createAuthorDto);
+    return this.AuthorService.create(createAuthorDto);
   }
 
   @Get()
-  findAll() {
-    return this.authorService.findAll();
+  findAll(@Query('page') page: number, @Query('limit') limit: number) {
+    // Ensure the page and limit are positive numbers; set defaults if not provided
+    page = page > 0 ? page : 1;
+    limit = limit > 0 ? limit : 10;
+    return this.AuthorService.findAll(page, limit);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authorService.findOne(+id);
+    return this.AuthorService.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    return this.authorService.update(+id, updateAuthorDto);
+    return this.AuthorService.update(+id, updateAuthorDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.authorService.remove(+id);
+    return this.AuthorService.remove(+id);
   }
 }

@@ -15,18 +15,20 @@ export class AuthorService {
   create(createAuthorDto: CreateAuthorDto) {
     const author = this.authorRepository.create(createAuthorDto);
     return this.authorRepository.save(author);
-
-    return 'This action adds a new author';
   }
 
-  findAll() {
-    return this.authorRepository.find();
-    return `This action returns all author`;
+  async findAll(page: number, limit: number) {
+    const [data, count] = await this.authorRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const totalPages = Math.ceil(count / limit);
+    return { data, count, currentPage: page, totalPages };
   }
 
   findOne(id: number) {
     return this.authorRepository.findOne({ where: { id } });
-    return `This action returns a #${id} author`;
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto): Promise<Author> {
