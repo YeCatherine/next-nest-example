@@ -1,11 +1,16 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const EditAuthor = ({ params }: { params: { id?: string } }) => {
-  const entity = 'author';
+const EditAuthor = ({
+  entity = 'book',
+  params,
+}: {
+  entity: string;
+  params: { id?: string };
+}) => {
   const [author, setAuthor] = useState({ firstName: '', lastName: '' });
   const router = useRouter();
 
@@ -16,7 +21,8 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
       );
       setAuthor(result.data);
     };
-    if (params?.id) {
+
+    if (params.id) {
       fetchAuthor();
     }
   }, []);
@@ -27,7 +33,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (params?.id) {
+    if (params.id) {
       await axios.patch(`http://localhost:3000/${entity}/${params.id}`, author);
     } else {
       await axios.post(`http://localhost:3000/${entity}`, author);
@@ -37,9 +43,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h3 className="text-lg font-semibold mb-4">
-        {params?.id ? 'Update' : 'Create'}&n"{entity}" content item
-      </h3>
+      <h3 className="text-lg font-semibold mb-4">Edit Author</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -47,7 +51,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
             <input
               type="text"
               name="firstName"
-              value={author.firstName}
+              value={author.firstName ? author.firstName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -59,7 +63,7 @@ const EditAuthor = ({ params }: { params: { id?: string } }) => {
             <input
               type="text"
               name="lastName"
-              value={author.lastName}
+              value={author.lastName ? author.lastName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />

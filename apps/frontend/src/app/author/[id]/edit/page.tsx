@@ -1,11 +1,11 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const EditAuthor = ({
-  entity = "author",
+  entity = 'author',
   params,
 }: {
   entity: string;
@@ -16,7 +16,9 @@ const EditAuthor = ({
 
   useEffect(() => {
     const fetchAuthor = async () => {
-      const result = await axios(`http://localhost:3000/author/${params.id}`);
+      const result = await axios(
+        `http://localhost:3000/${entity}/${params.id}`,
+      );
       setAuthor(result.data);
     };
 
@@ -32,16 +34,19 @@ const EditAuthor = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (params.id) {
-      await axios.patch(`http://localhost:3000/author/${params.id}`, author);
+      await axios.patch(`http://localhost:3000/${entity}/${params.id}`, author);
     } else {
-      await axios.post('http://localhost:3000/author', author);
+      await axios.post(`http://localhost:3000/${entity}`, author);
     }
-    router.push('/author');
+    router.push(`/${entity}`);
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h3 className="text-lg font-semibold mb-4">Edit Author</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {params?.id ? 'Update' : 'Create'}&nbsp;"{entity}" content item
+      </h3>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -49,7 +54,7 @@ const EditAuthor = ({
             <input
               type="text"
               name="firstName"
-              value={author.firstName ? author.firstName : ""}
+              value={author.firstName ? author.firstName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />
@@ -61,7 +66,7 @@ const EditAuthor = ({
             <input
               type="text"
               name="lastName"
-              value={author.lastName ? author.lastName : ""}
+              value={author.lastName ? author.lastName : ''}
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
             />

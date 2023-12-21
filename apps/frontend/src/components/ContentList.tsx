@@ -7,9 +7,9 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 /**
  * Capitalizes the first letter of the given string.
- * 
+ *
  * @param {string} string - The string to capitalize.
- * 
+ *
  * @returns {string} The capitalized string.
  */
 function capitalizeFirstLetter(string: string): string {
@@ -33,18 +33,22 @@ interface ContentItemPageProps {
  *
  * @returns {React.ReactElement} The React component.
  */
-const ContentItemPage: FC<ContentItemPageProps> = ({ entity = 'author', titleFields = ['title'] }) => {
+const ContentItemPage: FC<ContentItemPageProps> = ({
+  entity = 'author',
+  titleFields = ['title'],
+}) => {
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios(`${API_BASE_URL}/${entity}?page=${currentPage}&limit=${itemsPerPage}`);
+        const result = await axios(
+          `${API_BASE_URL}/${entity}?page=${currentPage}&limit=${itemsPerPage}`,
+        );
         setContentItems(result.data.data);
         setTotalPages(result.data.totalPages);
       } catch (err: any) {
@@ -61,15 +65,25 @@ const ContentItemPage: FC<ContentItemPageProps> = ({ entity = 'author', titleFie
     }
   };
   const contentItemTitle = (item: ContentItem): string => {
-    return titleFields.map(field => item[field]).join(' ');
+    return titleFields.map((field) => item[field]).join(' ');
   };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <ContentListTopBar entity={entity} />
-      {error && <p className="text-red-500">Error loading content items: {error}</p>}
-      <ContentListItems entity={entity} contentItems={contentItems} contentItemTitle={contentItemTitle} />
-      <Paginator currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      {error && (
+        <p className="text-red-500">Error loading content items: {error}</p>
+      )}
+      <ContentListItems
+        entity={entity}
+        contentItems={contentItems}
+        contentItemTitle={contentItemTitle}
+      />
+      <Paginator
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
@@ -80,9 +94,9 @@ interface ContentListTopBarProps {
 
 /**
  * Displays the top bar of the content list.
- * 
+ *
  * @param {ContentListTopBarProps} props - The properties of the component.
- * 
+ *
  * @returns {React.ReactElement} The React component.
  */
 const ContentListTopBar: FC<ContentListTopBarProps> = ({ entity }) => (
@@ -107,13 +121,16 @@ interface ContentListItemsProps {
 
 /**
  * Lists the content items.
- * 
+ *
  * @param {ContentListItemsProps} props - The properties of the component.
- * 
+ *
  * @returns {React.ReactElement} The React component.
  */
-const ContentListItems: FC<ContentListItemsProps> = ({ entity, contentItems=[], contentItemTitle }) => {
-
+const ContentListItems: FC<ContentListItemsProps> = ({
+  entity,
+  contentItems = [],
+  contentItemTitle,
+}) => {
   if (contentItems.length === 0) {
     return <p>No content items available.</p>;
   }
@@ -147,11 +164,11 @@ const ContentListItems: FC<ContentListItemsProps> = ({ entity, contentItems=[], 
 
 export default ContentItemPage;
 
-const Paginator: FC<{ currentPage: number; totalPages: number; onPageChange: (page: number) => void }> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) => (
+const Paginator: FC<{
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}> = ({ currentPage, totalPages, onPageChange }) => (
   <div className="flex justify-between items-center my-4">
     <button
       onClick={() => onPageChange(currentPage - 1)}

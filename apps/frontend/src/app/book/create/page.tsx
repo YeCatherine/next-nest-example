@@ -1,10 +1,12 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const CreateAuthor = () => {
-  const [author, setAuthor] = useState({ firstName: '', lastName: '' });
+  const basefields = { firstName: '', lastName: '' };
+  const [author, setAuthor] = useState(basefields);
+  const entity = 'book';
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -13,8 +15,8 @@ const CreateAuthor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:3000/author', author);
-    router.push('/author');
+    await axios.post(`http://localhost:3000/${entity}`, author);
+    router.push(`/${entity}`);
   };
 
   return (
@@ -37,7 +39,7 @@ const CreateAuthor = () => {
           onChange={handleChange}
         />
       </label>
-      <button type="submit">Create Author</button>
+      <button type="submit">Create "{entity}" content item</button>
     </form>
   );
 };

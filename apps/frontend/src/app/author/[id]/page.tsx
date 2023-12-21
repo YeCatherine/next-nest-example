@@ -1,15 +1,16 @@
 'use client';
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Author = ({ params }: { params: { id: string } }) => {
-  const [author, setAuthor] = useState([]);
-
+  const [contentItem, setContentItem] = useState([]);
+  const entity = 'author';
   useEffect(() => {
     const fetchAuthor = async () => {
-      const result = await axios(`http://localhost:3000/author/${params.id}`);
-      setAuthor(result.data);
+      const result = await axios(
+        `http://localhost:3000/${entity}/${params.id}`,
+      );
+      setContentItem(result.data);
     };
 
     fetchAuthor();
@@ -17,11 +18,11 @@ const Author = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      <h1>Author</h1>
-      <h2>Fist Name : {author.firstName}</h2>
-      <h2> Last Name : {author.lastName}</h2>
-      {author.createdAt}
-      {author.updatedAt}
+      <h1>${entity}</h1>
+      <h2>Fist Name : {contentItem.firstName}</h2>
+      <h2> Last Name : {contentItem.lastName}</h2>
+      {contentItem.createdAt}
+      {contentItem.updatedAt}
     </div>
   );
 };

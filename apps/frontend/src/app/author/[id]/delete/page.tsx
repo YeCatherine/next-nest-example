@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation'; // Corrected import path
  * @returns {JSX.Element} A component for deleting an entity.
  */
 const DeleteEntity = ({
-  entity = "author",
+  entity = 'author',
   params,
 }: {
   entity: string;
