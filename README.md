@@ -57,3 +57,5 @@ This will start all necessary services and open the frontend in your default bro
 - [ ] Move reusable frontend to packages/design-system
 - [ ] Add typedoc auto documentation creation
 - [ ] add cypress/playwright e2e and visual regression testing as separate package
+- [ ] Integrate Typescript generics for better type safety
+- [ ] Share types between frontend and backend using an external package
